@@ -8,7 +8,7 @@ which(game$event=="Goal") -> goals
 which(game$period[goals] <= 3) -> rgoals
 lastgoal <- goals[max(rgoals)]
 
-return(c(game$home_score[lastgoal], game$away_score[lastgoal]))
+return(as.data.frame(c(game$home_name[lastgoal], game$away_name[lastgoal], game$home_score[lastgoal], game$away_score[lastgoal])))
 
 return(score)
 }
