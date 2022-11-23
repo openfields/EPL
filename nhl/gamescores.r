@@ -7,9 +7,9 @@ game.scores <- function(gchunk){
   names(g.final) <- c("home", "away", "hgoals", "agoals")
   
   for(i in 1:length(oc.gids)){
-    which(oct.games$game_id==oc.gids[i]) -> tmp.gid
-    oct.games[tmp.gid,] -> tmp.game
-    regulationscore(oct.games[tmp.gid,]) -> g1.score
+    which(games$game_id==oc.gids[i]) -> tmp.gid
+    games[tmp.gid,] -> tmp.game
+    regulationscore(tmp.game) -> g1.score
     g.final[i, 1] <- g1.score[1,1]
     g.final[i, 2] <- g1.score[2,1]
     g.final[i, 3] <- as.numeric(g1.score[3,1])
