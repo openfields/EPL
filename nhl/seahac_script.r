@@ -36,13 +36,14 @@ gamescore('nhl_data/may012022.rds') -> may.scores
 
 
 rbind(oct.scores, nov.scores, dec.scores, jan.scores, feb.scores, mar.scores, apr.scores, xapr.scores, may.scores) -> all.scores
-season <- rep(2021, 1312) # missing: Dallas Stars at Chicago Blackhawks
+season <- rep(2021, 1312) 
 cbind(season, all.scores) -> nhldata
 names(nhldata) <- c("season", "home", "away", "home goals", "away goals")
 # team strength models
 library(footBayes)
-options(mc.cores=parallel::detectCores())
-niter <- 5000
+library(dplyr)
+options(mc.cores=8)
+niter <- 4000
 fit1_nhl <- stan_foot(data = nhldata,
                       model = 'biv_pois',
                       chains = 4,
@@ -56,3 +57,13 @@ fit2_nhl <- stan_foot(data = nhldata,
                       model = 'biv_pois',
                       dynamic_type = 'weekly',
                       iter = niter)
+
+
+fit3_nhl <- stan_foot(data = nhldata,
+                         model="double_pois",
+                         prior = student_t(4,0, NULL), # 4 df
+                         prior_sd = cauchy(0,25),
+                         dynamic_type = "weekly",
+                         #cores = 4,
+                         iter = n_iter)  # double poisson
+print(fit3_stan_t, pars =c("home", "sigma_att",
